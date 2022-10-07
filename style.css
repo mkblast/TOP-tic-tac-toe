@@ -1,0 +1,12 @@
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 0.5em;
+}
+
+.board > * {
+  border: solid black;
+  height: 5em;
+  width: 5em;
+}

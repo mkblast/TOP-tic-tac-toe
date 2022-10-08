@@ -1,9 +1,33 @@
 const gameBoard = (function() {
+
   let gameBoardLayout = ['', '', '', '', '', '', '', '', ''];
   let playedTiles = [];
   let gameTurn = 0;
   let xPlayer;
   let oPlayer;
+
+  const startGame = () => {
+    _addPlayers();
+    xPlayer.startListen();
+  }
+
+  const _addPlayers = () => {
+    xPlayer = player(prompt('name:'), 'X');
+    oPlayer = player(prompt('name:'), 'O');
+  }
+
+  const tileMark = (index, mark) => {
+    gameBoardLayout[index] = mark;
+    playedTiles.push(index);
+    _updateGame()
+  }
+
+  const _updateGame = () => {
+    _refreshBoard();
+    _renderTiles();
+    gameTurn++;
+    _checkGame()
+  }
 
   const _refreshBoard = () => {
     const board = document.querySelector('.board');
@@ -23,33 +47,6 @@ const gameBoard = (function() {
     for (let i = 0; i < gameTiles.length; i++) {
       gameTiles[i].textContent = gameBoardLayout[i];
     }
-  }
-
-  const tileMark = (index, mark) => {
-    gameBoardLayout[index] = mark;
-    playedTiles.push(index);
-    _updateGame()
-  }
-
-  const _updateGame = () => {
-    _refreshBoard();
-    _renderTiles();
-    gameTurn++;
-    _checkGame()
-  }
-
-  const _addPlayers = () => {
-    xPlayer = player(prompt('name:'), 'X');
-    oPlayer = player(prompt('name:'), 'O');
-  }
-
-  const startGame = () => {
-    _addPlayers();
-    xPlayer.startListen();
-  }
-
-  const _changeTurn = () => {
-    (gameTurn % 2 == 0) ? (xPlayer.startListen()) : (oPlayer.startListen());
   }
 
   const _checkGame = () => {
@@ -93,13 +90,15 @@ const gameBoard = (function() {
       }
     }
 
-    console.log(winConditions)
-
     for (let i = 0; i < winConditions.length; i++) {
       if (winConditions[i].length == 0) {
         return true;
       }
     }
+  }
+
+  const _changeTurn = () => {
+    (gameTurn % 2 == 0) ? (xPlayer.startListen()) : (oPlayer.startListen());
   }
 
   const restartGame = () => {
@@ -108,14 +107,27 @@ const gameBoard = (function() {
     gameTurn = 0;
     _refreshBoard()
     startGame()
-
   }
 
   return { tileMark, startGame, restartGame };
 })()
 
+const gameDisplay = (function() {
+
+  const startButton = document.querySelector('.start')
+  startButton.addEventListener('click', (e) => {
+    if (e.target.textContent == 'Start game') {
+      gameBoard.startGame()
+      e.target.textContent = 'Restart game'
+    } else {
+      gameBoard.restartGame()
+    }
+  })
+
+})()
 
 const player = function(name, mark) {
+
   const startListen = () => {
     const gameTiles = document.querySelectorAll('.tile');
     for (let i = 0; i < gameTiles.length; i++) {
@@ -127,16 +139,3 @@ const player = function(name, mark) {
 
   return { name, mark, startListen };
 }
-
-
-const gameDisplay = (function() {
-  const startButton = document.querySelector('.start')
-  startButton.addEventListener('click', (e) => {
-    if (e.target.textContent == 'Start game') {
-      gameBoard.startGame()
-      e.target.textContent = 'Restart game'
-    } else {
-      gameBoard.restartGame()
-    }
-  })
-})()

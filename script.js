@@ -11,7 +11,7 @@ const gameBoard = (function() {
     gameBoardLayout = ['', '', '', '', '', '', '', '', ''];
     playedTiles = [];
     gameTurn = 0;
-    _refreshBoard()
+    _refreshBoard();
 
     _addPlayers(gameBoard.ai);
     xPlayer.startListen();
@@ -33,13 +33,12 @@ const gameBoard = (function() {
   const tileMark = (index, mark) => {
     gameBoardLayout[index] = mark;
     playedTiles.push(index);
-    _updateGame()
+    _updateGame();
   }
 
   const aiTileMark = () => {
     const tile = document.querySelectorAll('.tile');
     const indexes = [];
-
     for (let i = 0; i < gameBoardLayout.length; i++) {
       if (gameBoardLayout[i] == '') {
         indexes.push(i);
@@ -47,10 +46,10 @@ const gameBoard = (function() {
     }
 
     const random = Math.floor(Math.random() * indexes.length);
-    tile[indexes[random]].textContent = oPlayer.mark
-    gameBoardLayout[indexes[random]] = oPlayer.mark
+    tile[indexes[random]].textContent = oPlayer.mark;
+    gameBoardLayout[indexes[random]] = oPlayer.mark;
 
-    _updateGame()
+    _updateGame();
 
   }
 
@@ -58,7 +57,7 @@ const gameBoard = (function() {
     _refreshBoard();
     _renderTiles();
     gameTurn++;
-    _checkGame()
+    _checkGame();
   }
 
   const _refreshBoard = () => {
@@ -83,11 +82,11 @@ const gameBoard = (function() {
 
   const _checkGame = () => {
     if (_checkLayout(xPlayer.mark)) {
-      return alert(`${xPlayer.name} Win`)
+      return alert(`${xPlayer.name} Win`);
     } else if (_checkLayout(oPlayer.mark)) {
-      return alert(`${oPlayer.name} Win`)
+      return alert(`${oPlayer.name} Win`);
     } else if (playedTiles.length == 9) {
-      return alert('Draw')
+      return alert('Draw');
     }
     return _changeTurn();
   }
@@ -141,8 +140,8 @@ const gameBoard = (function() {
     gameBoardLayout = ['', '', '', '', '', '', '', '', ''];
     playedTiles = [];
     gameTurn = 0;
-    _refreshBoard()
-    startGame()
+    _refreshBoard();
+    startGame();
   }
 
   return { tileMark, startGame, restartGame, ai };
@@ -150,32 +149,32 @@ const gameBoard = (function() {
 
 const gameDisplay = (function() {
 
-    const playerButton = document.querySelector('.start-player')
-    const aiButton = document.querySelector('.start-ai')
+  const playerButton = document.querySelector('.start-player');
+  const aiButton = document.querySelector('.start-ai');
 
-    playerButton.addEventListener('click', (e) => {
-      if (e.target.textContent == 'Player vs Player') {
-        gameBoard.ai = false;
-        gameBoard.startGame()
-        e.target.textContent = 'Restart Game'
-        aiButton.textContent = 'Player vs AI'
-      } else {
-        aiButton.textContent = 'Player vs AI'
-        gameBoard.restartGame()
-      }
-    })
+  playerButton.addEventListener('click', (e) => {
+    if (e.target.textContent == 'Player vs Player') {
+      gameBoard.ai = false;
+      gameBoard.startGame();
+      e.target.textContent = 'Restart Game';
+      aiButton.textContent = 'Player vs AI';
+    } else {
+      aiButton.textContent = 'Player vs AI';
+      gameBoard.restartGame();
+    }
+  })
 
-    aiButton.addEventListener('click', (e) => {
-      if (e.target.textContent == 'Player vs AI') {
-        gameBoard.ai = true
-        gameBoard.startGame()
-        e.target.textContent = 'Restart Game'
-        playerButton.textContent = 'Player vs Player'
-      } else {
-        playerButton.textContent = 'Player vs Player'
-        gameBoard.restartGame()
-      }
-    })
+  aiButton.addEventListener('click', (e) => {
+    if (e.target.textContent == 'Player vs AI') {
+      gameBoard.ai = true;
+      gameBoard.startGame();
+      e.target.textContent = 'Restart Game';
+      playerButton.textContent = 'Player vs Player';
+    } else {
+      playerButton.textContent = 'Player vs Player';
+      gameBoard.restartGame();
+    }
+  })
 
 })()
 

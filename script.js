@@ -22,7 +22,7 @@ const gameBoard = (function() {
 
     if (ai) {
       oPlayer = {
-        name: 'ai',
+        name: 'AI',
         mark: 'O'
       }
     } else {

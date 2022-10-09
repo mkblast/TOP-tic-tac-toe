@@ -48,6 +48,7 @@ const gameBoard = (function() {
     const random = Math.floor(Math.random() * indexes.length);
     tile[indexes[random]].textContent = oPlayer.mark;
     gameBoardLayout[indexes[random]] = oPlayer.mark;
+    playedTiles.push(indexes[random]);
 
     _updateGame();
   }
@@ -81,11 +82,11 @@ const gameBoard = (function() {
 
   const _checkGame = () => {
     if (_checkLayout(xPlayer.mark)) {
-      return gameDisplay.showResault(xPlayer.name);
-    } else if (_checkLayout(oPlayer.mark)) {
+      return gameDisplay.showResault(xPlayer.name, true);
+    } else if (_checkLayout(oPlayer.mark, true)) {
       return gameDisplay.showResault(oPlayer.name);
     } else if (playedTiles.length == 9) {
-      return gameDisplay.showResault();
+      return gameDisplay.showResault('', false);
     }
 
     return _changeTurn()
@@ -154,12 +155,13 @@ const gameDisplay = (function() {
   const aiButton = document.querySelector('.start-ai');
   const resaultDiv = document.querySelector('.resault');
 
-  const showResault = (player) => {
-    if (player) {
+  const showResault = (player, win) => {
+    if (win) {
       const resaultDiv = document.querySelector('.resault');
       return resaultDiv.textContent = `${player} Wins`
+    } else {
+      return resaultDiv.textContent = 'It\'s a Draw'
     }
-    return resaultDiv.textContent = 'It\'s a Draw'
   }
 
   const updateDisplay = (mode) => {

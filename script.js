@@ -5,21 +5,53 @@ const gameBoard = (function() {
   let gameTurn = 0;
   let xPlayer;
   let oPlayer;
+  let ai;
 
   const startGame = () => {
-    _addPlayers();
+    gameBoardLayout = ['', '', '', '', '', '', '', '', ''];
+    playedTiles = [];
+    gameTurn = 0;
+    _refreshBoard()
+
+    _addPlayers(gameBoard.ai);
     xPlayer.startListen();
   }
 
-  const _addPlayers = () => {
+  const _addPlayers = (ai) => {
     xPlayer = player(prompt('name:'), 'X');
-    oPlayer = player(prompt('name:'), 'O');
+
+    if (ai) {
+      oPlayer = {
+        name: 'ai',
+        mark: 'O'
+      }
+    } else {
+      oPlayer = player(prompt('name:'), 'O');
+    }
   }
 
   const tileMark = (index, mark) => {
     gameBoardLayout[index] = mark;
     playedTiles.push(index);
     _updateGame()
+  }
+
+  const aiTileMark = () => {
+    const tile = document.querySelectorAll('.tile');
+    const indexes = [];
+
+    for (let i = 0; i < gameBoardLayout.length; i++) {
+      if (gameBoardLayout[i] == '') {
+        indexes.push(i);
+      }
+    }
+
+    const random = Math.floor(Math.random() * indexes.length);
+    tile[indexes[random]].textContent = oPlayer.mark
+    gameBoardLayout[indexes[random]] = oPlayer.mark
+
+    _updateGame()
+
   }
 
   const _updateGame = () => {
@@ -98,7 +130,11 @@ const gameBoard = (function() {
   }
 
   const _changeTurn = () => {
-    (gameTurn % 2 == 0) ? (xPlayer.startListen()) : (oPlayer.startListen());
+    if (gameBoard.ai) {
+      (gameTurn % 2 == 0) ? (xPlayer.startListen()) : (aiTileMark());
+    } else {
+      (gameTurn % 2 == 0) ? (xPlayer.startListen()) : (oPlayer.startListen());
+    }
   }
 
   const restartGame = () => {
@@ -109,20 +145,37 @@ const gameBoard = (function() {
     startGame()
   }
 
-  return { tileMark, startGame, restartGame };
+  return { tileMark, startGame, restartGame, ai };
 })()
 
 const gameDisplay = (function() {
 
-  const startButton = document.querySelector('.start')
-  startButton.addEventListener('click', (e) => {
-    if (e.target.textContent == 'Start game') {
-      gameBoard.startGame()
-      e.target.textContent = 'Restart game'
-    } else {
-      gameBoard.restartGame()
-    }
-  })
+    const playerButton = document.querySelector('.start-player')
+    const aiButton = document.querySelector('.start-ai')
+
+    playerButton.addEventListener('click', (e) => {
+      if (e.target.textContent == 'Player vs Player') {
+        gameBoard.ai = false;
+        gameBoard.startGame()
+        e.target.textContent = 'Restart Game'
+        aiButton.textContent = 'Player vs AI'
+      } else {
+        aiButton.textContent = 'Player vs AI'
+        gameBoard.restartGame()
+      }
+    })
+
+    aiButton.addEventListener('click', (e) => {
+      if (e.target.textContent == 'Player vs AI') {
+        gameBoard.ai = true
+        gameBoard.startGame()
+        e.target.textContent = 'Restart Game'
+        playerButton.textContent = 'Player vs Player'
+      } else {
+        playerButton.textContent = 'Player vs Player'
+        gameBoard.restartGame()
+      }
+    })
 
 })()
 
@@ -132,7 +185,7 @@ const player = function(name, mark) {
     const gameTiles = document.querySelectorAll('.tile');
     for (let i = 0; i < gameTiles.length; i++) {
       if (gameTiles[i].className == 'tile empty') {
-        gameTiles[i].addEventListener('click', () => { gameBoard.tileMark(i, mark) });
+        gameTiles[i].addEventListener('click', () => { gameBoard.tileMark(i, mark, false) });
       }
     }
   }

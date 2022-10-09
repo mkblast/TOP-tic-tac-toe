@@ -56,7 +56,7 @@ const gameBoard = (function() {
     _refreshBoard();
     _renderTiles();
     gameTurn++;
-    _checkGame();
+    setTimeout(_checkGame, 500)
   }
 
   const _refreshBoard = () => {
@@ -87,7 +87,8 @@ const gameBoard = (function() {
     } else if (playedTiles.length == 9) {
       return gameDisplay.showResault();
     }
-    return _changeTurn();
+
+    return _changeTurn()
   }
 
   const _checkLayout = (mark) => {
@@ -161,17 +162,25 @@ const gameDisplay = (function() {
     return resaultDiv.textContent = 'It\'s a Draw'
   }
 
+  const updateDisplay = (mode) => {
+    if (mode) {
+      aiButton.textContent = 'Player vs AI';
+      resaultDiv.textContent = ''
+    } else {
+      playerButton.textContent = 'Player vs Player';
+      resaultDiv.textContent = ''
+    }
+  }
+
 
   playerButton.addEventListener('click', (e) => {
     if (e.target.textContent == 'Player vs Player') {
       gameBoard.ai = false;
       gameBoard.startGame();
       e.target.textContent = 'Restart Game';
-      aiButton.textContent = 'Player vs AI';
-      resaultDiv.textContent = ''
+      updateDisplay(true)
     } else {
-      resaultDiv.textContent = ''
-      aiButton.textContent = 'Player vs AI';
+      updateDisplay(true)
       gameBoard.restartGame();
     }
   })
@@ -181,11 +190,9 @@ const gameDisplay = (function() {
       gameBoard.ai = true;
       gameBoard.startGame();
       e.target.textContent = 'Restart Game';
-      playerButton.textContent = 'Player vs Player';
-      resaultDiv.textContent = ''
+      updateDisplay(false)
     } else {
-      resaultDiv.textContent = ''
-      playerButton.textContent = 'Player vs Player';
+      updateDisplay(false)
       gameBoard.restartGame();
     }
   })

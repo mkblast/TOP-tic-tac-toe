@@ -50,7 +50,6 @@ const gameBoard = (function() {
     gameBoardLayout[indexes[random]] = oPlayer.mark;
 
     _updateGame();
-
   }
 
   const _updateGame = () => {
@@ -82,11 +81,11 @@ const gameBoard = (function() {
 
   const _checkGame = () => {
     if (_checkLayout(xPlayer.mark)) {
-      return alert(`${xPlayer.name} Win`);
+      return gameDisplay.showResault(xPlayer.name);
     } else if (_checkLayout(oPlayer.mark)) {
-      return alert(`${oPlayer.name} Win`);
+      return gameDisplay.showResault(oPlayer.name);
     } else if (playedTiles.length == 9) {
-      return alert('Draw');
+      return gameDisplay.showResault();
     }
     return _changeTurn();
   }
@@ -144,6 +143,7 @@ const gameBoard = (function() {
     startGame();
   }
 
+
   return { tileMark, startGame, restartGame, ai };
 })()
 
@@ -151,6 +151,16 @@ const gameDisplay = (function() {
 
   const playerButton = document.querySelector('.start-player');
   const aiButton = document.querySelector('.start-ai');
+  const resaultDiv = document.querySelector('.resault');
+
+  const showResault = (player) => {
+    if (player) {
+      const resaultDiv = document.querySelector('.resault');
+      return resaultDiv.textContent = `${player} Wins`
+    }
+    return resaultDiv.textContent = 'It\'s a Draw'
+  }
+
 
   playerButton.addEventListener('click', (e) => {
     if (e.target.textContent == 'Player vs Player') {
@@ -158,7 +168,9 @@ const gameDisplay = (function() {
       gameBoard.startGame();
       e.target.textContent = 'Restart Game';
       aiButton.textContent = 'Player vs AI';
+      resaultDiv.textContent = ''
     } else {
+      resaultDiv.textContent = ''
       aiButton.textContent = 'Player vs AI';
       gameBoard.restartGame();
     }
@@ -170,11 +182,15 @@ const gameDisplay = (function() {
       gameBoard.startGame();
       e.target.textContent = 'Restart Game';
       playerButton.textContent = 'Player vs Player';
+      resaultDiv.textContent = ''
     } else {
+      resaultDiv.textContent = ''
       playerButton.textContent = 'Player vs Player';
       gameBoard.restartGame();
     }
   })
+
+  return { showResault }
 
 })()
 

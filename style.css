@@ -1,3 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+
+html {
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+}
+
 .title {
   text-align: center;
 }
@@ -12,13 +24,18 @@
 }
 
 .board {
-  display: grid;
+  display: inline-grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
   gap: 0.5em;
 }
 
 .board > * {
+  font-size: 1.5em;
+  font-weight: bolder;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: solid black;
   height: 5em;
   width: 5em;

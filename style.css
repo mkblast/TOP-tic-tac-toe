@@ -2,15 +2,23 @@
 
 *, *::before, *::after {
   box-sizing: inherit;
+  margin: 0px;
 }
 
 html {
+  background-color: #241f31;
   font-family: 'Inter', sans-serif;
   box-sizing: border-box;
+
 }
 
 .title {
+  color: #ffffff;
   text-align: center;
+  background-color: #3d3846;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  margin-bottom: 1em;
 }
 
 .board-box {
@@ -26,21 +34,54 @@ html {
   display: inline-grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  gap: 0.5em;
+  gap: 0.3em;
 }
 
 .board > * {
+  background-color: #3d3846;
+  color: #ffffff;
   font-size: 1.5em;
   font-weight: bolder;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: solid black;
+  border: none;
+  border-radius: 0.2em;
   height: 5em;
   width: 5em;
+}
+
+.board > *:hover {
+  background-color: #5e5c64;
 }
 
 .buttons {
   display: flex;
   gap: 10em;
+}
+
+button:hover {
+  background-color: #5e5c64;
+}
+
+button {
+  color: #ffffff;
+  font-weight: bolder;
+  background-color: #3d3846;
+  border: none;
+  border-radius: 0.5em;
+  padding: 1em 1.5em;
+}
+
+.resault:empty {
+  background-color: #241f31;
+}
+
+.resault {
+  color: #ffffff;
+  background-color: #3d3846;
+  padding: 1em 3em;
+  border-radius: 0.5em;
+  font-size: 1.2em;
+  font-weight: bolder;
 }

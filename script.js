@@ -103,6 +103,7 @@ const gameBoard = (function() {
       [0, 4, 8],
       [2, 4, 6]
     ]
+
     const indexes = [];
     for (let i = 0; i < gameBoardLayout.length; i++) {
       if (gameBoardLayout[i] == mark) {
@@ -124,9 +125,29 @@ const gameBoard = (function() {
 
     for (let i = 0; i < winConditions.length; i++) {
       if (winConditions[i].length == 0) {
+        _highlightWin(i)
         return true;
       }
     }
+  }
+
+  const _highlightWin = (tray) => {
+    const winConditions = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6]
+    ]
+
+    const tiles = document.getElementsByClassName('tile');
+    for (let i = 0; i < winConditions[tray].length; i++) {
+      tiles[winConditions[tray][i]].style.backgroundColor = '#5e5c64'
+    }
+
   }
 
   const _changeTurn = () => {

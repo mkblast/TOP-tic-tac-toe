@@ -7,6 +7,17 @@ const gameBoard = (function() {
   let oPlayer;
   let ai;
 
+  const winConditions = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+  ]
+
   const startGame = () => {
     gameBoardLayout = ['', '', '', '', '', '', '', '', ''];
     playedTiles = [];
@@ -93,16 +104,12 @@ const gameBoard = (function() {
   }
 
   const _checkLayout = (mark) => {
-    const winConditions = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6]
-    ]
+
+    let arrayCopy = []
+
+    for (let i = 0; i < winConditions.length; i++) {
+      arrayCopy[i] = winConditions[i].slice();
+    }
 
     const indexes = [];
     for (let i = 0; i < gameBoardLayout.length; i++) {
@@ -112,19 +119,19 @@ const gameBoard = (function() {
     }
 
     if (indexes.length != 0) {
-      for (let i = 0; i < winConditions.length; i++) {
-        for (let j = 0; j < winConditions[i].length; j++) {
+      for (let i = 0; i < arrayCopy.length; i++) {
+        for (let j = 0; j < arrayCopy[i].length; j++) {
           for (let k = 0; k < indexes.length; k++) {
-            if (winConditions[i][j] == indexes[k]) {
-              winConditions[i].splice(j, 1);
+            if (arrayCopy[i][j] == indexes[k]) {
+              arrayCopy[i].splice(j, 1);
             }
           }
         }
       }
     }
 
-    for (let i = 0; i < winConditions.length; i++) {
-      if (winConditions[i].length == 0) {
+    for (let i = 0; i < arrayCopy.length; i++) {
+      if (arrayCopy[i].length == 0) {
         _highlightWin(i)
         return true;
       }
@@ -132,20 +139,16 @@ const gameBoard = (function() {
   }
 
   const _highlightWin = (tray) => {
-    const winConditions = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6]
-    ]
+
+    let arrayCopy = []
+
+    for (let i = 0; i < winConditions.length; i++) {
+      arrayCopy[i] = winConditions[i].slice();
+    }
 
     const tiles = document.getElementsByClassName('tile');
-    for (let i = 0; i < winConditions[tray].length; i++) {
-      tiles[winConditions[tray][i]].style.backgroundColor = '#5e5c64'
+    for (let i = 0; i < arrayCopy[tray].length; i++) {
+      tiles[arrayCopy[tray][i]].style.backgroundColor = '#5e5c64'
     }
 
   }

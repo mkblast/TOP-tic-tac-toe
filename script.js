@@ -23,7 +23,6 @@ const gameBoard = (function() {
     playedTiles = [];
     gameTurn = 0;
     _refreshBoard();
-
     _addPlayers(gameBoard.ai);
     xPlayer.startListen();
   }
@@ -68,7 +67,7 @@ const gameBoard = (function() {
     _refreshBoard();
     _renderTiles();
     gameTurn++;
-    setTimeout(_checkGame, 500)
+    _checkGame()
   }
 
   const _refreshBoard = () => {
@@ -155,7 +154,7 @@ const gameBoard = (function() {
 
   const _changeTurn = () => {
     if (gameBoard.ai) {
-      (gameTurn % 2 == 0) ? (xPlayer.startListen()) : (aiTileMark());
+      (gameTurn % 2 == 0) ? (xPlayer.startListen()) : (setTimeout(aiTileMark, 500));
     } else {
       (gameTurn % 2 == 0) ? (xPlayer.startListen()) : (oPlayer.startListen());
     }
@@ -224,7 +223,6 @@ const gameDisplay = (function() {
   })
 
   return { showResault }
-
 })()
 
 const player = function(name, mark) {

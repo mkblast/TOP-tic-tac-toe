@@ -84,7 +84,7 @@ const gameBoard = (function() {
     if (_checkLayout(xPlayer.mark)) {
       return gameDisplay.showResault(xPlayer.name, true);
     } else if (_checkLayout(oPlayer.mark, true)) {
-      return gameDisplay.showResault(oPlayer.name);
+      return gameDisplay.showResault(oPlayer.name, true);
     } else if (playedTiles.length == 9) {
       return gameDisplay.showResault('', false);
     }
